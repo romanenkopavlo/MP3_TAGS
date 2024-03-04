@@ -4,11 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
+import javafx.scene.media.Media;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -18,6 +19,10 @@ public class Controller implements Initializable {
     public Label labelChemin;
     @FXML
     public Label labelFichier;
+    @FXML
+    public Button playButton;
+    @FXML
+    public Button stopButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -34,6 +39,11 @@ public class Controller implements Initializable {
         if (fichierSelectionner != null) {
             labelChemin.setText(fichierSelectionner.toString());
             labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
+            String uriPath = fichierSelectionner.toURI().toString();
+            Media media = new Media(uriPath);
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            playButton.setOnAction(event -> mediaPlayer.play());
+            stopButton.setOnAction(event -> mediaPlayer.stop());
         }
     }
 }
