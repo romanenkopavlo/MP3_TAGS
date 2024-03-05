@@ -19,16 +19,18 @@
    <Button fx:id="playButton" layoutX="35.0" layoutY="148.0" mnemonicParsing="false" text="Play" />
    <Button fx:id="stopButton" layoutX="98.0" layoutY="148.0" mnemonicParsing="false" text="Stop" />
    <Button fx:id="lireTagsButton" layoutX="142.0" layoutY="13.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="118.0" text="Lire tags" />
-   <Label fx:id="titreLabel" layoutX="27.0" layoutY="199.0" prefHeight="18.0" prefWidth="162.0"/>
-   <TextField fx:id="titreText" layoutX="30.0" layoutY="229.0" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: #a0a0a0;"/>
-   <Label fx:id="artisteLabel" layoutX="26.0" layoutY="265.0" prefHeight="18.0" prefWidth="150.0"/>
-   <TextField fx:id="artisteText" layoutX="29.0" layoutY="297.0" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: #a0a0a0;"/>
+   <Label fx:id="titreLabel" layoutX="27.0" layoutY="199.0" prefHeight="18.0" prefWidth="162.0" />
+   <TextField fx:id="titreText" layoutX="30.0" layoutY="229.0" prefHeight="26.0" prefWidth="310.0" stylesheets="@appstyle/css.css" />
+   <Label fx:id="artisteLabel" layoutX="26.0" layoutY="265.0" prefHeight="18.0" prefWidth="150.0" />
+   <TextField fx:id="artisteText" layoutX="29.0" layoutY="297.0" prefHeight="26.0" prefWidth="310.0" stylesheets="@appstyle/css.css" />
    <Label fx:id="albumLabel" layoutX="26.0" layoutY="331.0" prefHeight="18.0" prefWidth="192.0" />
-   <TextField fx:id="albumText" layoutX="29.0" layoutY="360.0" prefHeight="26.0" prefWidth="310.0" style="-fx-background-color: #a0a0a0;"/>
+   <TextField fx:id="albumText" layoutX="29.0" layoutY="360.0" prefHeight="26.0" prefWidth="310.0" stylesheets="@appstyle/css.css" />
    <Label fx:id="anneeLabel" layoutX="26.0" layoutY="406.0" prefHeight="18.0" prefWidth="185.0" />
-   <TextField fx:id="anneeText" layoutX="30.0" layoutY="439.0" style="-fx-background-color: #a0a0a0;"/>
+   <TextField fx:id="anneeText" layoutX="30.0" layoutY="439.0" stylesheets="@appstyle/css.css" />
    <Label fx:id="commentLabel" layoutX="26.0" layoutY="485.0" prefHeight="18.0" prefWidth="111.0" />
-   <TextField fx:id="commentText" layoutX="29.0" layoutY="519.0" prefHeight="26.0" prefWidth="327.0" style="-fx-background-color: #a0a0a0;"/>
-   <TextField fx:id="genreText" layoutX="30.0" layoutY="588.0" style="-fx-background-color: #a0a0a0;"/>
+   <TextField fx:id="commentText" layoutX="29.0" layoutY="519.0" prefHeight="26.0" prefWidth="327.0" stylesheets="@appstyle/css.css" />
+   <TextField fx:id="genreText" layoutX="30.0" layoutY="588.0" stylesheets="@appstyle/css.css" />
    <Label fx:id="genreLabel" layoutX="26.0" layoutY="557.0" prefHeight="18.0" prefWidth="215.0" />
+   <Button fx:id="modifierButton" layoutX="288.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Modifier" />
+   <Button fx:id="enregistrerButton" layoutX="494.0" layoutY="328.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="150.0" text="Enregistrer" />
 </AnchorPane>

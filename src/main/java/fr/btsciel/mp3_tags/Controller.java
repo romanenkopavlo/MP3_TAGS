@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.FileChooser;
 import javafx.scene.media.Media;
@@ -40,6 +41,8 @@ public class Controller implements Initializable {
     public TextField commentText;
     public TextField genreText;
     public Label genreLabel;
+    public Button modifierButton;
+    public Button enregistrerButton;
     public Media media;
     public MediaPlayer mediaPlayer;
     public Tag tagFichier;
@@ -53,6 +56,9 @@ public class Controller implements Initializable {
         anneeText.setEditable(false);
         commentText.setEditable(false);
         genreText.setEditable(false);
+        playButton.setDisable(true);
+        stopButton.setDisable(true);
+        setGreyColor();
         labelChemin.setText("");
         labelFichier.setText("");
 
@@ -70,6 +76,34 @@ public class Controller implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+
+        modifierButton.setOnAction(event -> {
+            if (fichierSelectionner != null) {
+                titreText.setEditable(true);
+                albumText.setEditable(true);
+                artisteText.setEditable(true);
+                anneeText.setEditable(true);
+                commentText.setEditable(true);
+                genreText.setEditable(true);
+                buttonFichier.setDisable(true);
+                modifierButton.setDisable(true);
+                lireTagsButton.setDisable(true);
+                setBlueColor();
+            }
+        });
+
+        enregistrerButton.setOnAction(event -> {
+            titreText.setEditable(false);
+            albumText.setEditable(false);
+            artisteText.setEditable(false);
+            anneeText.setEditable(false);
+            commentText.setEditable(false);
+            genreText.setEditable(false);
+            buttonFichier.setDisable(false);
+            modifierButton.setDisable(false);
+            lireTagsButton.setDisable(false);
+            setGreyColor();
+        });
     }
 
     private void ouvrirChoixFichier() {
@@ -78,6 +112,7 @@ public class Controller implements Initializable {
         fileChooser.setInitialDirectory(new File("./mp3"));
         fichierSelectionner = fileChooser.showOpenDialog(null);
         if (fichierSelectionner != null) {
+            playButton.setDisable(false);
             labelChemin.setText(fichierSelectionner.toString());
             labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
 
@@ -98,8 +133,16 @@ public class Controller implements Initializable {
             String uriPath = fichierSelectionner.toURI().toString();
             media = new Media(uriPath);
             mediaPlayer = new MediaPlayer(media);
-            playButton.setOnAction(event -> mediaPlayer.play());
-            stopButton.setOnAction(event -> mediaPlayer.stop());
+            playButton.setOnAction(event -> {
+                mediaPlayer.play();
+                playButton.setDisable(true);
+                stopButton.setDisable(false);
+            });
+            stopButton.setOnAction(event -> {
+                mediaPlayer.stop();
+                stopButton.setDisable(true);
+                playButton.setDisable(false);
+            });
         }
     }
     private void lireTags() throws IOException {
@@ -164,5 +207,45 @@ public class Controller implements Initializable {
             genreText.setText(String.valueOf(tagFichier.getGenre()));
             dis.close();
         }
+    }
+
+    private void setGreyColor() {
+        titreText.getStyleClass().clear();
+        titreText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+
+        albumText.getStyleClass().clear();
+        albumText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+
+        artisteText.getStyleClass().clear();
+        artisteText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+
+        anneeText.getStyleClass().clear();
+        anneeText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+
+        genreText.getStyleClass().clear();
+        genreText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+
+        commentText.getStyleClass().clear();
+        commentText.getStyleClass().addAll("text-field", "text-input","normal-text-field");
+    }
+
+    private void setBlueColor() {
+        titreText.getStyleClass().clear();
+        titreText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
+
+        albumText.getStyleClass().clear();
+        albumText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
+
+        artisteText.getStyleClass().clear();
+        artisteText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
+
+        anneeText.getStyleClass().clear();
+        anneeText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
+
+        genreText.getStyleClass().clear();
+        genreText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
+
+        commentText.getStyleClass().clear();
+        commentText.getStyleClass().addAll("text-field", "text-input","modification-text-field");
     }
 }
