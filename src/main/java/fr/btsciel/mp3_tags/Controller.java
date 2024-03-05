@@ -58,6 +58,8 @@ public class Controller implements Initializable {
         genreText.setEditable(false);
         playButton.setDisable(true);
         stopButton.setDisable(true);
+        lireTagsButton.setDisable(true);
+        modifierButton.setDisable(true);
         enregistrerButton.setDisable(true);
         enregistrerButton.setOpacity(0);
         setGreyColor();
@@ -74,6 +76,7 @@ public class Controller implements Initializable {
         lireTagsButton.setOnAction(event -> {
             try {
                 lireTags();
+                modifierButton.setDisable(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -118,6 +121,8 @@ public class Controller implements Initializable {
         fileChooser.setInitialDirectory(new File("./mp3"));
         fichierSelectionner = fileChooser.showOpenDialog(null);
         if (fichierSelectionner != null) {
+            modifierButton.setDisable(true);
+            lireTagsButton.setDisable(false);
             playButton.setDisable(false);
             labelChemin.setText(fichierSelectionner.toString());
             labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
