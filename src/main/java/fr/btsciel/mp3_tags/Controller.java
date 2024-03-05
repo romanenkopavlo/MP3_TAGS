@@ -10,7 +10,6 @@ import javafx.scene.media.Media;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ResourceBundle;
 
@@ -39,9 +38,9 @@ public class Controller implements Initializable {
     public Button enregistrerButton;
     public Media media;
     public MediaPlayer mediaPlayer;
-    public Tag tagFichier;
     public File fichierSelectionner;
-    public byte[] tableau;
+    public GestionTag gestionTag;
+    public Path path;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -76,9 +75,33 @@ public class Controller implements Initializable {
 
         lireTagsButton.setOnAction(event -> {
             try {
-                lireTags();
                 lireTagsButton.setDisable(true);
                 modifierButton.setDisable(false);
+
+                gestionTag = new GestionTag(path);
+                gestionTag.lireTags();
+
+                titreLabel.setText("Titre");
+                titreText.setText(gestionTag.getTag().getTitre());
+
+                artisteLabel.setText("Artiste");
+                artisteText.setText(gestionTag.getTag().getArtiste());
+
+                albumLabel.setText("Album");
+                albumText.setText(gestionTag.getTag().getAlbum());
+
+                anneeLabel.setText("Annee");
+                anneeText.setText(gestionTag.getTag().getAnnee());
+
+                commentLabel.setText("Commentaire");
+                commentText.setText(gestionTag.getTag().getCommentaire());
+
+                trackLabel.setText("Track");
+                trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
+
+                genreLabel.setText("Genre");
+                genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -124,6 +147,7 @@ public class Controller implements Initializable {
         fileChooser.setInitialDirectory(new File("./mp3"));
         fichierSelectionner = fileChooser.showOpenDialog(null);
         if (fichierSelectionner != null) {
+            path = fichierSelectionner.toPath();
             modifierButton.setDisable(true);
             lireTagsButton.setDisable(false);
             playButton.setDisable(false);
@@ -151,52 +175,6 @@ public class Controller implements Initializable {
             String uriPath = fichierSelectionner.toURI().toString();
             media = new Media(uriPath);
             mediaPlayer = new MediaPlayer(media);
-        }
-    }
-    private void lireTags() throws IOException {
-        if (fichierSelectionner != null) {
-            tagFichier = new Tag();
-            Path path = fichierSelectionner.toPath();
-            InputStream is = Files.newInputStream(path);
-            DataInputStream dis = new DataInputStream(is);
-
-            dis.skipBytes((int)(fichierSelectionner.length()) - 128);
-
-            tableau = new byte[128];
-
-            for (int i = 0; i < tableau.length; i++) {
-                tableau[i] = dis.readByte();
-            }
-
-            tagFichier.setTitre(new String(tableau, 3, 30));
-            titreLabel.setText("Titre");
-            titreText.setText(tagFichier.getTitre());
-
-            tagFichier.setArtiste(new String(tableau, 33, 30));
-            artisteLabel.setText("Artiste");
-            artisteText.setText(tagFichier.getArtiste());
-
-            tagFichier.setAlbum(new String(tableau, 63, 30));
-            albumLabel.setText("Album");
-            albumText.setText(tagFichier.getAlbum());
-
-            tagFichier.setAnnee(new String(tableau, 93, 4));
-            anneeLabel.setText("Annee");
-            anneeText.setText(tagFichier.getAnnee());
-
-            tagFichier.setCommentaire(new String(tableau, 97, 28));
-            commentLabel.setText("Commentaire");
-            commentText.setText(tagFichier.getCommentaire());
-
-            tagFichier.setTrack(tableau[126]);
-            trackLabel.setText("Track");
-            trackText.setText(String.valueOf(tagFichier.getTrack()));
-
-            tagFichier.setGenre(tableau[127]);
-            genreLabel.setText("Genre");
-            genreText.setText(String.valueOf(tagFichier.getGenre()));
-
-            dis.close();
         }
     }
 
