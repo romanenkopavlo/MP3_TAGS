@@ -58,6 +58,8 @@ public class Controller implements Initializable {
         genreText.setEditable(false);
         playButton.setDisable(true);
         stopButton.setDisable(true);
+        enregistrerButton.setDisable(true);
+        enregistrerButton.setOpacity(0);
         setGreyColor();
         labelChemin.setText("");
         labelFichier.setText("");
@@ -79,6 +81,8 @@ public class Controller implements Initializable {
 
         modifierButton.setOnAction(event -> {
             if (fichierSelectionner != null) {
+                enregistrerButton.setDisable(false);
+                enregistrerButton.setOpacity(100);
                 titreText.setEditable(true);
                 albumText.setEditable(true);
                 artisteText.setEditable(true);
@@ -102,6 +106,8 @@ public class Controller implements Initializable {
             buttonFichier.setDisable(false);
             modifierButton.setDisable(false);
             lireTagsButton.setDisable(false);
+            enregistrerButton.setDisable(true);
+            enregistrerButton.setOpacity(0);
             setGreyColor();
         });
     }
@@ -207,6 +213,10 @@ public class Controller implements Initializable {
             genreText.setText(String.valueOf(tagFichier.getGenre()));
             dis.close();
         }
+    }
+
+    private void ecrireTags() {
+
     }
 
     private void setGreyColor() {
