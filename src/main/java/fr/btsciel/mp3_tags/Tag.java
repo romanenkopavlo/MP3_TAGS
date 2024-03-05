@@ -7,6 +7,16 @@ public class Tag {
     public String annee;
     public String commentaire;
     public byte genre;
+    public byte track;
+
+    public byte getTrack() {
+        return track;
+    }
+
+    public void setTrack(byte track) {
+        this.track = track;
+    }
+
     public Tag() {
 
     }
