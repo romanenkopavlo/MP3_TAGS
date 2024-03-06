@@ -1,5 +1,8 @@
 package fr.btsciel.mp3_tags;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +35,13 @@ public class GestionTag {
             tag.setCommentaire(new String(bytes, 97, 28));
             tag.setTrack(bytes[126]);
             tag.setGenre(bytes[127]);
+        } else {
+            Alert dialogWindow = new Alert(Alert.AlertType.ERROR);
+            dialogWindow.setTitle("Error");
+            dialogWindow.setHeaderText(null);
+            dialogWindow.setContentText("Extension file error");
+            dialogWindow.showAndWait();
+            Platform.exit();
         }
     }
 
