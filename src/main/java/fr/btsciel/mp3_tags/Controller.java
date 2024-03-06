@@ -71,45 +71,36 @@ public class Controller implements Initializable {
         buttonFichier.setOnAction(event -> {
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
+                playButton.setDisable(false);
+                stopButton.setDisable(true);
             }
             ouvrirChoixFichier();
         });
 
         lireTagsButton.setOnAction(event -> {
-            try {
-                gestionTag = new GestionTag(path);
-                gestionTag.lireTags();
-                if (!gestionTag.isError()) {
-                    lireTagsButton.setDisable(true);
-                    modifierButton.setDisable(false);
+            lireTagsButton.setDisable(true);
+            modifierButton.setDisable(false);
 
-                    titreLabel.setText("Titre");
-                    titreText.setText(gestionTag.getTag().getTitre());
+            titreLabel.setText("Titre");
+            titreText.setText(gestionTag.getTag().getTitre());
 
-                    artisteLabel.setText("Artiste");
-                    artisteText.setText(gestionTag.getTag().getArtiste());
+            artisteLabel.setText("Artiste");
+            artisteText.setText(gestionTag.getTag().getArtiste());
 
-                    albumLabel.setText("Album");
-                    albumText.setText(gestionTag.getTag().getAlbum());
+            albumLabel.setText("Album");
+            albumText.setText(gestionTag.getTag().getAlbum());
 
-                    anneeLabel.setText("Annee");
-                    anneeText.setText(gestionTag.getTag().getAnnee());
+            anneeLabel.setText("Annee");
+            anneeText.setText(gestionTag.getTag().getAnnee());
 
-                    commentLabel.setText("Commentaire");
-                    commentText.setText(gestionTag.getTag().getCommentaire());
+            commentLabel.setText("Commentaire");
+            commentText.setText(gestionTag.getTag().getCommentaire());
 
-                    trackLabel.setText("Track");
-                    trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
+            trackLabel.setText("Track");
+            trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
 
-                    genreLabel.setText("Genre");
-                    genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
-                } else {
-                    setEmptyText();
-                    gestionTag.setError(false);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            genreLabel.setText("Genre");
+            genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
         });
 
         modifierButton.setOnAction(event -> {
@@ -134,9 +125,6 @@ public class Controller implements Initializable {
         });
 
         playButton.setOnAction(event -> {
-            String uriPath = fichierSelectionner.toURI().toString();
-            media = new Media(uriPath);
-            mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
             playButton.setDisable(true);
             stopButton.setDisable(false);
@@ -156,14 +144,31 @@ public class Controller implements Initializable {
         fichierSelectionner = fileChooser.showOpenDialog(null);
         if (fichierSelectionner != null) {
             path = fichierSelectionner.toPath();
-            modifierButton.setDisable(true);
-            lireTagsButton.setDisable(false);
-            playButton.setDisable(false);
-            stopButton.setDisable(true);
+            gestionTag = new GestionTag(path);
+            try {
+                gestionTag.lireTags();
+                if (!gestionTag.isMP3()) {
+                    alertError();
+                    ouvrirChoixFichier();
+                }
 
-            labelChemin.setText(fichierSelectionner.toString());
-            labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
-            setEmptyText();
+                if (fichierSelectionner != null) {
+                    lireTagsButton.setDisable(false);
+                    playButton.setDisable(false);
+                    modifierButton.setDisable(true);
+                    stopButton.setDisable(true);
+
+                    labelChemin.setText(fichierSelectionner.toString());
+                    labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
+                    setEmptyText();
+
+                    String uriPath = fichierSelectionner.toURI().toString();
+                    media = new Media(uriPath);
+                    mediaPlayer = new MediaPlayer(media);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -213,5 +218,12 @@ public class Controller implements Initializable {
         commentText.setText("");
         genreText.setText("");
         trackText.setText("");
+    }
+    private void alertError() {
+        Alert dialogWindow = new Alert(Alert.AlertType.ERROR);
+        dialogWindow.setTitle("Error");
+        dialogWindow.setHeaderText(null);
+        dialogWindow.setContentText("Extension file error");
+        dialogWindow.showAndWait();
     }
 }
