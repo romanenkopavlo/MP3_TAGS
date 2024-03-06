@@ -77,33 +77,36 @@ public class Controller implements Initializable {
 
         lireTagsButton.setOnAction(event -> {
             try {
-                lireTagsButton.setDisable(true);
-                modifierButton.setDisable(false);
-
                 gestionTag = new GestionTag(path);
                 gestionTag.lireTags();
+                if (!gestionTag.isError()) {
+                    lireTagsButton.setDisable(true);
+                    modifierButton.setDisable(false);
 
-                titreLabel.setText("Titre");
-                titreText.setText(gestionTag.getTag().getTitre());
+                    titreLabel.setText("Titre");
+                    titreText.setText(gestionTag.getTag().getTitre());
 
-                artisteLabel.setText("Artiste");
-                artisteText.setText(gestionTag.getTag().getArtiste());
+                    artisteLabel.setText("Artiste");
+                    artisteText.setText(gestionTag.getTag().getArtiste());
 
-                albumLabel.setText("Album");
-                albumText.setText(gestionTag.getTag().getAlbum());
+                    albumLabel.setText("Album");
+                    albumText.setText(gestionTag.getTag().getAlbum());
 
-                anneeLabel.setText("Annee");
-                anneeText.setText(gestionTag.getTag().getAnnee());
+                    anneeLabel.setText("Annee");
+                    anneeText.setText(gestionTag.getTag().getAnnee());
 
-                commentLabel.setText("Commentaire");
-                commentText.setText(gestionTag.getTag().getCommentaire());
+                    commentLabel.setText("Commentaire");
+                    commentText.setText(gestionTag.getTag().getCommentaire());
 
-                trackLabel.setText("Track");
-                trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
+                    trackLabel.setText("Track");
+                    trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
 
-                genreLabel.setText("Genre");
-                genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
-
+                    genreLabel.setText("Genre");
+                    genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
+                } else {
+                    setEmptyText();
+                    gestionTag.setError(false);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -131,6 +134,9 @@ public class Controller implements Initializable {
         });
 
         playButton.setOnAction(event -> {
+            String uriPath = fichierSelectionner.toURI().toString();
+            media = new Media(uriPath);
+            mediaPlayer = new MediaPlayer(media);
             mediaPlayer.play();
             playButton.setDisable(true);
             stopButton.setDisable(false);
@@ -157,40 +163,7 @@ public class Controller implements Initializable {
 
             labelChemin.setText(fichierSelectionner.toString());
             labelFichier.setText(fichierSelectionner.getAbsoluteFile().getName());
-
-            titreLabel.setText("");
-            albumLabel.setText("");
-            artisteLabel.setText("");
-            anneeLabel.setText("");
-            commentLabel.setText("");
-            genreLabel.setText("");
-            trackLabel.setText("");
-
-            titreText.setText("");
-            albumText.setText("");
-            artisteText.setText("");
-            anneeText.setText("");
-            commentText.setText("");
-            genreText.setText("");
-            trackText.setText("");
-
-            String fileName =fichierSelectionner.getName();
-            int point = fileName.lastIndexOf(".");
-
-            System.out.println(fileName.substring(point + 1));
-
-            if ((fileName.substring(point + 1)).equals("mp3")) {
-                String uriPath = fichierSelectionner.toURI().toString();
-                media = new Media(uriPath);
-                mediaPlayer = new MediaPlayer(media);
-            } else {
-                Alert dialogWindow = new Alert(Alert.AlertType.ERROR);
-                dialogWindow.setTitle("Error");
-                dialogWindow.setHeaderText(null);
-                dialogWindow.setContentText("Extension file error");
-                dialogWindow.showAndWait();
-                Platform.exit();
-            }
+            setEmptyText();
         }
     }
 
@@ -222,5 +195,23 @@ public class Controller implements Initializable {
         commentText.setEditable(false);
         genreText.setEditable(false);
         trackText.setEditable(false);
+    }
+
+    private void setEmptyText() {
+        titreLabel.setText("");
+        albumLabel.setText("");
+        artisteLabel.setText("");
+        anneeLabel.setText("");
+        commentLabel.setText("");
+        genreLabel.setText("");
+        trackLabel.setText("");
+
+        titreText.setText("");
+        albumText.setText("");
+        artisteText.setText("");
+        anneeText.setText("");
+        commentText.setText("");
+        genreText.setText("");
+        trackText.setText("");
     }
 }
