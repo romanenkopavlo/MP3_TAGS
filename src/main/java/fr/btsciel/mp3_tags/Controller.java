@@ -1,6 +1,8 @@
 package fr.btsciel.mp3_tags;
 
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -172,9 +174,23 @@ public class Controller implements Initializable {
             genreText.setText("");
             trackText.setText("");
 
-            String uriPath = fichierSelectionner.toURI().toString();
-            media = new Media(uriPath);
-            mediaPlayer = new MediaPlayer(media);
+            String fileName =fichierSelectionner.getName();
+            int point = fileName.lastIndexOf(".");
+
+            System.out.println(fileName.substring(point + 1));
+
+            if ((fileName.substring(point + 1)).equals("mp3")) {
+                String uriPath = fichierSelectionner.toURI().toString();
+                media = new Media(uriPath);
+                mediaPlayer = new MediaPlayer(media);
+            } else {
+                Alert dialogWindow = new Alert(Alert.AlertType.ERROR);
+                dialogWindow.setTitle("Error");
+                dialogWindow.setHeaderText(null);
+                dialogWindow.setContentText("Extension file error");
+                dialogWindow.showAndWait();
+                Platform.exit();
+            }
         }
     }
 
