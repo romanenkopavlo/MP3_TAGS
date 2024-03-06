@@ -21,19 +21,18 @@ public class GestionTag {
         DataInputStream dis = new DataInputStream(is);
 
         dis.skipBytes((int)(Files.size(fileSource)) - 128);
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = dis.readByte();
-        }
-
-        tag.setTitre(new String(bytes, 3, 30));
-        tag.setArtiste(new String(bytes, 33, 30));
-        tag.setAlbum(new String(bytes, 63, 30));
-        tag.setAnnee(new String(bytes, 93, 4));
-        tag.setCommentaire(new String(bytes, 97, 28));
-        tag.setTrack(bytes[126]);
-        tag.setGenre(bytes[127]);
-
+        dis.read(bytes);
         dis.close();
+
+        if (new String(bytes, 0, 3).equals("TAG")) {
+            tag.setTitre(new String(bytes, 3, 30));
+            tag.setArtiste(new String(bytes, 33, 30));
+            tag.setAlbum(new String(bytes, 63, 30));
+            tag.setAnnee(new String(bytes, 93, 4));
+            tag.setCommentaire(new String(bytes, 97, 28));
+            tag.setTrack(bytes[126]);
+            tag.setGenre(bytes[127]);
+        }
     }
 
     public Tag getTag() {
