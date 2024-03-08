@@ -114,14 +114,22 @@ public class Controller implements Initializable {
         });
 
         enregistrerButton.setOnAction(event -> {
-            unsetEditableTextFields();
-            setGreyColor();
-            enregistrerButton.setOpacity(0);
-            enregistrerButton.setDisable(true);
+            try {
+                gestionTag.effacerTags();
+                setNewTags();
+                gestionTag.ecrireTags();
 
-            buttonFichier.setDisable(false);
-            modifierButton.setDisable(false);
-            lireTagsButton.setDisable(true);
+                unsetEditableTextFields();
+                setGreyColor();
+                enregistrerButton.setOpacity(0);
+                enregistrerButton.setDisable(true);
+
+                buttonFichier.setDisable(false);
+                modifierButton.setDisable(false);
+                lireTagsButton.setDisable(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         playButton.setOnAction(event -> {
@@ -219,6 +227,17 @@ public class Controller implements Initializable {
         genreText.setText("");
         trackText.setText("");
     }
+
+    public void setNewTags() {
+        gestionTag.getTag().setTitre(titreText.getText());
+        gestionTag.getTag().setArtiste(artisteText.getText());
+        gestionTag.getTag().setAlbum(albumText.getText());
+        gestionTag.getTag().setAnnee(anneeText.getText());
+        gestionTag.getTag().setCommentaire(commentText.getText());
+        gestionTag.getTag().setGenre(Byte.parseByte(genreText.getText()));
+        gestionTag.getTag().setTrack(Byte.parseByte(trackText.getText()));
+    }
+
     private void alertError() {
         Alert dialogWindow = new Alert(Alert.AlertType.ERROR);
         dialogWindow.setTitle("Error");

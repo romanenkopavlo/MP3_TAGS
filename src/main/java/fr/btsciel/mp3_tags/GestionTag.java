@@ -1,8 +1,6 @@
 package fr.btsciel.mp3_tags;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -39,13 +37,44 @@ public class GestionTag {
         }
     }
 
-    public void ecrireTags() {
+    public void ecrireTags() throws IOException {
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) 0x00;
         }
         for (int i = 0; i < tag.getTitre().length(); i++) {
             bytes[3 + i] = (byte) tag.getTitre().charAt(i);
         }
+        for (int i = 0; i < tag.getArtiste().length(); i++) {
+            bytes[33 + i] = (byte) tag.getArtiste().charAt(i);
+        }
+        for (int i = 0; i < tag.getAlbum().length(); i++) {
+            bytes[63 + i] = (byte) tag.getAlbum().charAt(i);
+        }
+        for (int i = 0; i < tag.getAnnee().length(); i++) {
+            bytes[93 + i] = (byte) tag.getAnnee().charAt(i);
+        }
+        for (int i = 0; i< tag.getCommentaire().length(); i++) {
+            bytes[97 + i] = (byte) tag.getCommentaire().charAt(i);
+        }
+
+        bytes[126] = tag.getTrack();
+        bytes[127] = tag.getGenre();
+
+        RandomAccessFile randomAccessFile = new RandomAccessFile(fileSource.toAbsolutePath().toString(), "rw");
+        long size = randomAccessFile.length();
+        randomAccessFile.seek(size - 128);
+        randomAccessFile.write(bytes);
+        randomAccessFile.close();
+    }
+
+    public void effacerTags() {
+        tag.setTitre("");
+        tag.setArtiste("");
+        tag.setAlbum("");
+        tag.setAnnee("");
+        tag.setCommentaire("");
+        tag.setTrack((byte) 0x00);
+        tag.setGenre((byte) 0x00);
     }
 
     public boolean isMP3() {
