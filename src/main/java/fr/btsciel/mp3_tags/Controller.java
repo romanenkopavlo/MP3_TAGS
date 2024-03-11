@@ -1,6 +1,5 @@
 package fr.btsciel.mp3_tags;
 
-import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
