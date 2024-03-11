@@ -82,25 +82,14 @@ public class Controller implements Initializable {
             modifierButton.setDisable(false);
 
             titreLabel.setText("Titre");
-            titreText.setText(gestionTag.getTag().getTitre());
-
             artisteLabel.setText("Artiste");
-            artisteText.setText(gestionTag.getTag().getArtiste());
-
             albumLabel.setText("Album");
-            albumText.setText(gestionTag.getTag().getAlbum());
-
             anneeLabel.setText("Annee");
-            anneeText.setText(gestionTag.getTag().getAnnee());
-
             commentLabel.setText("Commentaire");
-            commentText.setText(gestionTag.getTag().getCommentaire());
-
             trackLabel.setText("Track");
-            trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
-
             genreLabel.setText("Genre");
-            genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
+
+            setTagsDescriptions();
         });
 
         modifierButton.setOnAction(event -> {
@@ -118,6 +107,8 @@ public class Controller implements Initializable {
                 gestionTag.effacerTags();
                 setNewTags();
                 gestionTag.ecrireTags();
+                gestionTag.lireTags();
+                setTagsDescriptions();
 
                 unsetEditableTextFields();
                 setGreyColor();
@@ -236,6 +227,16 @@ public class Controller implements Initializable {
         gestionTag.getTag().setCommentaire(commentText.getText());
         gestionTag.getTag().setGenre(Byte.parseByte(genreText.getText()));
         gestionTag.getTag().setTrack(Byte.parseByte(trackText.getText()));
+    }
+
+    public void setTagsDescriptions() {
+        titreText.setText(gestionTag.getTag().getTitre());
+        artisteText.setText(gestionTag.getTag().getArtiste());
+        albumText.setText(gestionTag.getTag().getAlbum());
+        anneeText.setText(gestionTag.getTag().getAnnee());
+        commentText.setText(gestionTag.getTag().getCommentaire());
+        trackText.setText(String.valueOf(gestionTag.getTag().getTrack()));
+        genreText.setText(String.valueOf(gestionTag.getTag().getGenre()));
     }
 
     private void alertError() {

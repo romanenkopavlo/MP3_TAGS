@@ -26,6 +26,12 @@ public class GestionTag {
         dis.read(bytes);
         dis.close();
 
+        for (int i = 0; i < bytes.length; i++) {
+            if (bytes[i] == 0) {
+                bytes[i] = 0x20;
+            }
+        }
+
         if (new String(bytesID3).equals("ID3")) {
             tag.setTitre(new String(bytes, 3, 30));
             tag.setArtiste(new String(bytes, 33, 30));
@@ -42,19 +48,29 @@ public class GestionTag {
             bytes[i] = (byte) 0x00;
         }
         for (int i = 0; i < tag.getTitre().length(); i++) {
-            bytes[3 + i] = (byte) tag.getTitre().charAt(i);
+            if (i < 30) {
+                bytes[3 + i] = (byte) tag.getTitre().charAt(i);
+            }
         }
         for (int i = 0; i < tag.getArtiste().length(); i++) {
-            bytes[33 + i] = (byte) tag.getArtiste().charAt(i);
+            if (i < 30) {
+                bytes[33 + i] = (byte) tag.getArtiste().charAt(i);
+            }
         }
         for (int i = 0; i < tag.getAlbum().length(); i++) {
-            bytes[63 + i] = (byte) tag.getAlbum().charAt(i);
+            if (i < 30) {
+                bytes[63 + i] = (byte) tag.getAlbum().charAt(i);
+            }
         }
         for (int i = 0; i < tag.getAnnee().length(); i++) {
-            bytes[93 + i] = (byte) tag.getAnnee().charAt(i);
+            if (i < 4) {
+                bytes[93 + i] = (byte) tag.getAnnee().charAt(i);
+            }
         }
         for (int i = 0; i< tag.getCommentaire().length(); i++) {
-            bytes[97 + i] = (byte) tag.getCommentaire().charAt(i);
+            if (i < 28) {
+                bytes[97 + i] = (byte) tag.getCommentaire().charAt(i);
+            }
         }
 
         bytes[126] = tag.getTrack();
